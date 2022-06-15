@@ -3,8 +3,26 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+// @ts-ignore
+import TronWeb from 'tronweb'
+
 const Home: NextPage = () => {
-    console.log(process.env.PRIVATE_KEY)
+    const tronWeb = new TronWeb({
+        fullHost: 'https://api.shasta.trongrid.io',
+        headers: { 'TRON-PRO-API-KEY': process.env.API_KEY },
+        privateKey: process.env.PRIVATE_KEY,
+    })
+
+    async function send_token(to_add: string, amount: string) {
+        const contract = await tronWeb.contract().at(process.env.TOKEN_ADDRESS)
+        const transaction = await contract.transfer(to_add, parseInt(amount))
+        const receipt = await transaction.call()
+
+        console.log(receipt)
+    }
+
+    send_token('THMfWGvGexXjWDRGv2Fss7edRt3soey4wf', '1')
+
     return (
         <div className={styles.container}>
             <Head>
