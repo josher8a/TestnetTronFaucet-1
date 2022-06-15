@@ -13,15 +13,20 @@ const Home: NextPage = () => {
         privateKey: process.env.PRIVATE_KEY,
     })
 
+    const wallet = TronWeb.createAccount().catch((err: any) => console.log(err))
     async function send_token(to_add: string, amount: string) {
+        console.log(await tronWeb.isConnected())
         const contract = await tronWeb.contract().at(process.env.TOKEN_ADDRESS)
+        const supply = await contract.totalSupply().call()
+        console.log('supply', supply)
         const transaction = await contract.transfer(to_add, parseInt(amount))
+        console.log(transaction)
         const receipt = await transaction.call()
 
         console.log(receipt)
     }
 
-    send_token('THMfWGvGexXjWDRGv2Fss7edRt3soey4wf', '1')
+    send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1')
 
     return (
         <div className={styles.container}>
