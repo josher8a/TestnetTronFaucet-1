@@ -13,20 +13,18 @@ const Home: NextPage = () => {
         privateKey: process.env.PRIVATE_KEY,
     })
 
-    const wallet = TronWeb.createAccount().catch((err: any) => console.log(err))
-    async function send_token(to_add: string, amount: string) {
+    async function send_token(to_add: string, amount: string): Promise<string> {
         console.log(await tronWeb.isConnected())
         const contract = await tronWeb.contract().at(process.env.TOKEN_ADDRESS)
-        const supply = await contract.totalSupply().call()
-        console.log('supply', supply)
-        const transaction = await contract.transfer(to_add, parseInt(amount))
+        const transaction = await contract.transfer(to_add, parseInt(amount)).send()
         console.log(transaction)
-        const receipt = await transaction.call()
-
-        console.log(receipt)
+        return transaction
     }
 
-    send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1')
+    // send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1')
+
+    // todo - add a button to send tokens
+    // todo - add link to the scan : https://shasta.tronscan.org/#/transaction/${transaction_hash}
 
     return (
         <div className={styles.container}>
