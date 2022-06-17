@@ -53,10 +53,7 @@ const Home: NextPage = () => {
                     value={walletAddress}
                     onChange={e => setWalletAddress(e.target.value)}
                 />
-                <button
-                    style={{ marginTop: 10 }}
-                    onClick={() => send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1').then(console.log)}
-                >
+                <button style={{ marginTop: 10 }} onClick={() => send_token(walletAddress, '1').then(console.log)}>
                     Enviar
                 </button>
             </main>
