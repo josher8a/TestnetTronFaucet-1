@@ -6,36 +6,38 @@ import styles from '../styles/Home.module.css'
 // @ts-ignore
 import TronWeb from 'tronweb'
 
+const tronWeb = new TronWeb({
+    fullHost: 'https://api.shasta.trongrid.io',
+    headers: {
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Origin': '*',
+        'TRON-PRO-API-KEY': process.env.REACT_APP_API_KEY,
+    },
+    privateKey: process.env.REACT_APP_PRIVATE_KEY,
+})
+
 async function send_token(to_add: string, amount: string): Promise<string> {
-    const tronWeb = new TronWeb({
-        fullHost: 'https://api.shasta.trongrid.io',
-        headers: {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'TRON-PRO-API-KEY': process.env.API_KEY
-        },
-        privateKey: process.env.PRIVATE_KEY,
-    })
-    console.log(await tronWeb.isConnected())
-    const contract = await tronWeb.contract().at(process.env.TOKEN_ADDRESS)
-    console.log('contract', contract);
-    const transaction = await contract.transfer(to_add, parseInt(amount)).send()
-    console.log(transaction)
-    return transaction
+    console.log('send_token')
+    try {
+        const status = await tronWeb.isConnected()
+        console.log(':3', process.env.REACT_APP_TOKEN_ADDRESS)
+        const contract = await tronWeb.contract().at(process.env.REACT_APP_TOKEN_ADDRESS)
+        console.log('contract', contract)
+        const transaction = await contract.transfer(to_add, parseInt(amount)).send()
+        console.log(transaction)
+        return transaction
+    } catch (error) {
+        console.log(error)
+        return 'webonly'
+    }
 }
 
-function useSend(walletAddress: string) {
-    return useCallback(async () => {
-        return await send_token(walletAddress, '1')
-    }, [walletAddress])
-}
+send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1').then(console.log)
 
 const Home: NextPage = () => {
     // window.open(`https://shasta.tronscan.org/#/transaction/${res}`);
 
-    const [walletAddress, setWalletAddress] = useState('');
-
-    const sent = useSend(walletAddress);
+    const [walletAddress, setWalletAddress] = useState('')
 
     return (
         <div className={styles.container}>
@@ -49,12 +51,16 @@ const Home: NextPage = () => {
                     type="text"
                     placeholder="Enter wallet address"
                     value={walletAddress}
-                    onChange={(e) => setWalletAddress(e.target.value)}
+                    onChange={e => setWalletAddress(e.target.value)}
                 />
-                <button style={{ marginTop: 10 }} onClick={() => {sent().then()}}>Enviar</button>
+                <button
+                    style={{ marginTop: 10 }}
+                    onClick={() => send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1').then(console.log)}
+                >
+                    Enviar
+                </button>
             </main>
-            <footer className={styles.footer}>
-            </footer>
+            <footer className={styles.footer}></footer>
         </div>
     )
 }
