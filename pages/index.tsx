@@ -3,41 +3,17 @@ import { useState, useCallback } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-// @ts-ignore
-import TronWeb from 'tronweb'
-
-const tronWeb = new TronWeb({
-    fullHost: 'https://api.shasta.trongrid.io',
-    headers: {
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Origin': '*',
-        'TRON-PRO-API-KEY': process.env.REACT_APP_API_KEY,
-    },
-    privateKey: process.env.REACT_APP_PRIVATE_KEY,
-})
-
-async function send_token(to_add: string, amount: string): Promise<string> {
-    console.log('send_token')
-    try {
-        const status = await tronWeb.isConnected()
-        console.log(':3', process.env.REACT_APP_TOKEN_ADDRESS)
-        const contract = await tronWeb.contract().at(process.env.REACT_APP_TOKEN_ADDRESS)
-        console.log('contract', contract)
-        const transaction = await contract.transfer(to_add, parseInt(amount)).send()
-        console.log(transaction)
-        return transaction
-    } catch (error) {
-        console.log(error)
-        return 'webonly'
-    }
-}
-
-send_token('TFmV2WPBznHr6LSsxHyAF1PNsjSFRF1DtP', '1').then(console.log)
-
 const Home: NextPage = () => {
     // window.open(`https://shasta.tronscan.org/#/transaction/${res}`);
 
     const [walletAddress, setWalletAddress] = useState('')
+
+    const handleChange = useCallback(async () => {
+        const res = await fetch(`/api/address/${walletAddress}`)
+        const tx = await res.text()
+        console.log(tx)
+        window.open(`https://shasta.tronscan.org/#/transaction/${tx}`)
+    }, [walletAddress])
 
     return (
         <div className={styles.container}>
@@ -53,7 +29,7 @@ const Home: NextPage = () => {
                     value={walletAddress}
                     onChange={e => setWalletAddress(e.target.value)}
                 />
-                <button style={{ marginTop: 10 }} onClick={() => send_token(walletAddress, '1').then(console.log)}>
+                <button style={{ marginTop: 10 }} onClick={handleChange}>
                     Enviar
                 </button>
             </main>
