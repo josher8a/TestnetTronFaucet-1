@@ -10,20 +10,11 @@ const tronWeb = new TronWeb({
 })
 
 async function send_token(to_add: string, amount: string): Promise<string> {
-    console.log('send_token')
-    try {
-        const status = await tronWeb.isConnected()
-        console.log('status', status)
-        console.log(':3', process.env.REACT_APP_TOKEN_ADDRESS)
-        const contract = await tronWeb.contract().at(process.env.REACT_APP_TOKEN_ADDRESS)
-        console.log('contract', contract)
-        const transaction = await contract.transfer(to_add, parseInt(amount)).send()
-        console.log(transaction)
-        return transaction
-    } catch (error) {
-        console.log(error)
-        return 'webonly'
-    }
+    const status = await tronWeb.isConnected()
+    console.log(status)
+    const contract = await tronWeb.contract().at(process.env.REACT_APP_TOKEN_ADDRESS)
+    const transaction = await contract.transfer(to_add, parseInt(amount)).send()
+    return transaction
 }
 
 export default async function handler(request: any, response: any) {
