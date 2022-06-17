@@ -7,10 +7,16 @@ const Home: NextPage = () => {
     // window.open(`https://shasta.tronscan.org/#/transaction/${res}`);
 
     const [walletAddress, setWalletAddress] = useState('')
+    const [response, setResponse] = useState({
+        amount: '',
+        address: '',
+        tx: '',
+    })
 
     const handleChange = useCallback(async () => {
         const res = await fetch(`/api/address/${walletAddress}`)
-        const tx = await res.text()
+        const { amount, address, tx } = await res.json()
+        setResponse({ amount, address, tx })
         console.log(tx)
         window.open(`https://shasta.tronscan.org/#/transaction/${tx}`)
     }, [walletAddress])
@@ -32,6 +38,11 @@ const Home: NextPage = () => {
                 <button style={{ marginTop: 10 }} onClick={handleChange}>
                     Enviar
                 </button>
+                <div>
+                    <h2>Tx: {response.tx}</h2>
+                    <h2>Amount: {response.amount}</h2>
+                    <h2>Address: {response.address}</h2>
+                </div>
             </main>
             <footer className={styles.footer}></footer>
         </div>
