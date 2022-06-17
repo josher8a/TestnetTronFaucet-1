@@ -27,14 +27,21 @@ async function send_token(to_add: string, amount: string): Promise<string> {
 }
 
 export default async function handler(request: any, response: any) {
-    console.log('handler')
-    console.log(request.query)
-    const { address } = request.query
-    const amount = Math.ceil(100 * Math.random()) * 10000
-    const tx = await send_token(address, amount.toString())
-    response.status(200).json({
-        amount: (amount / 1000000).toString(),
-        address,
-        tx,
-    })
+    try {
+        console.log('handler')
+        console.log(request.query)
+        const { address } = request.query
+        const amount = Math.ceil(100 * Math.random()) * 10000
+        const tx = await send_token(address, amount.toString())
+        response.status(200).json({
+            amount: (amount / 1000000).toString(),
+            address,
+            tx,
+        })
+    } catch (error) {
+        console.log(error)
+        response.status(500).json({
+            error,
+        })
+    }
 }
