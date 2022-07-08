@@ -17,7 +17,7 @@ export default function Layout({
             {/* Header */}
             <nav className={styles.navbar}>
                 <Container fluid="true">
-                    <Row fluid="true" xs="12" className={styles.row}>
+                    <Row noGutters fluid="true" xs="12" className={styles.row}>
                         <Col fluid="true" xs="6" className={styles.col}>
                             <p className={styles.p}>Powered by <a href="app.eldorado.io">El Dorado Io</a></p>
                         </Col>
@@ -31,7 +31,7 @@ export default function Layout({
             {/* Footer */}
             <nav className={styles.navbar}>
                 <Container fluid="true">
-                    <Row fluid="true" xs="12" className={styles.row}>
+                    <Row noGutters fluid="true" xs="12" className={styles.row}>
                         <Col fluid="true" xs="6" className={styles.col}>
                             <p className={styles.p}>Copyright @ El Dorado Io - All Rights Reserved</p>
                         </Col>
