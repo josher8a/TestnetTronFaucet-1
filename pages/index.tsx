@@ -59,7 +59,6 @@ const Home: NextPage = () => {
                     <hr/>
                     <Row noGutters fluid="true" xs="12">
                         <h5 className={styles.h5}>Tx: {response.tx}</h5>
-                        <h5 className={styles.h5}>HOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLAHOLA</h5>
                         <h5 className={styles.h5}>Amount: {response.amount}</h5>
                         <h5 className={styles.h5}>Address: {response.address}</h5>
                     </Row>
