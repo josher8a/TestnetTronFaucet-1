@@ -22,7 +22,7 @@ export default async function handler(request: any, response: any) {
         console.log('handler')
         console.log(request.query)
         const { address } = request.query
-        const amount = Math.ceil(100 * Math.random()) * 10000
+        const amount = Math.ceil(10 * Math.random()) * 1000000
         const tx = await send_token(address, amount.toString())
         response.status(200).json({
             amount: (amount / 1000000).toString(),
